@@ -16,7 +16,7 @@ sudoku = Sudoku()
 
 @app.route('/')
 def index():
-    return render_template('sudoku.html', username='naru')
+    return render_template('sudoku.html')
 
 
 @app.route('/api/result/', methods=['POST'])
@@ -45,4 +45,4 @@ def api_result():
 
 def start():
     app.debug = True
-    app.run()
+    app.run(host='0.0.0.0')
