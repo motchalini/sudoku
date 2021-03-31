@@ -17,11 +17,13 @@ docker build -t sudoku .
 1. (^o^)
 
 # version
-- 1.2.0
+- 1.3.0
+数値指定アシスト追加
+- 1.2.0  
 Dockerで起動.  
-- 1.1.0
+- 1.1.0  
 画面で操作部分を追加.  
 懸賞を送るための合計値を計算.  
-- 1.0.0
+- 1.0.0  
 数独はPythonで考えて解く話  
 https://note.com/motchalini/n/n00af5def35a4

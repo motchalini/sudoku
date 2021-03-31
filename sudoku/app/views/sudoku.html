@@ -10,11 +10,20 @@
     <!-- CSS -->
     <style type="text/css">
         <!--
-        #sudoku-box div {width:450px;}
+        #sudoku-cells {width: 630px; height: 630px;}
+        #sudoku-input-box {border: solid 2px!important;}
+        #sudoku-control {width: 630px;}
+        .select-assist {cursor: default;}
+        .choice-number {background-color:rgb(255, 255, 255)!important;}
+        .select-number {background-color:rgba(168, 227, 255, 0.9)!important;}
         .cells {text-align: center; border-radius: 0!important;}
         .fixed-number {background-color:#dddddd!important;}
         .calc-number {background-color:white!important;}
         .select-calc {background-color:orange!important;}
+        .cell-y-3, .cell-y-6 {border-top: solid 2px!important;}
+        .cell-x-3, .cell-x-6 {border-left: solid 2px!important;}
+        .relative {position: relative;}
+        .absolute {position: absolute;}
         -->
     </style>
 
@@ -59,6 +68,32 @@
                    $('#msg').html(totalFormula);
                 }
             });
+
+            $('td').on('mouseenter', function(event) {
+                if ($('#calc').is(':visible')) {
+                    $(this).children('.select-assist').removeClass('d-none')
+                }
+            });
+
+            $('td').on('mouseleave', function(event) {
+                if ($('#calc').is(':visible')) {
+                    $(this).children('.select-assist').addClass('d-none')
+                }
+            });
+
+            $('.choice-number').on('mouseover', function(event) {
+                $(this).addClass('select-number')
+            });
+
+            $('.choice-number').on('mouseout', function(event) {
+                $(this).removeClass('select-number')
+            });
+
+            $('.choice-number').on('click', function(event) {
+                $(this).closest('td').find('input').val($(this).html())
+                $(this).closest('.select-assist').addClass('d-none')
+            });
+
         });
 
         function leaveOnlyNumber(event) {
@@ -105,14 +140,21 @@
 </head>
 <body>
     <form id="sudoku-box">
-        <div class="m-3 border border-dark text-center">
-            <table class="w-100">
+        <div class="m-3">
+            <table id="sudoku-cells">
                 <tbody id="sudoku-input-box">
                     {% for y in range(0, 9) %}
                     <tr>
                         {% for x in range(0, 9) %}
-                        <td class="m-0 p-0 border border-dark">
-                            <input type="tel" class="form-control-plaintext form-control form-control-lg p-0 border-0 cells" name="cell{{ y }}{{ x }}" id="cell{{ y }}{{ x }}" maxlength="1">
+                        <td class="m-0 p-0 border border-dark relative cell-y-{{ y }} cell-x-{{ x }}">
+                            <div class="p-0 container absolute select-assist w-100 h-100 d-none">
+                                <div class="m-0 row w-100 h-100">
+                                    {% for z in range(1, 10) %}
+                                    <div class="p-0 col-4 border text-center small choice-number">{{ z }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <input type="tel" class="form-control-plaintext form-control form-control-lg p-0 h-100 border-0 cells" name="cell{{ y }}{{ x }}" id="cell{{ y }}{{ x }}" maxlength="1">
                         </td>
                         {% endfor %}
                     </tr>
@@ -120,7 +162,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="m-3 text-center">
+        <div class="m-3 text-center" id="sudoku-control">
             <button type="button" id="calc" class="btn btn-primary">計算</button>
             <button type="button" id="reset" class="btn btn-primary" style="display: none;">リセット</button>
             <div id="msg"></div>
